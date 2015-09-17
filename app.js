@@ -18,6 +18,7 @@ app.use('/static', express.static('static'));
 app.use(bodyParser.urlencoded({
       extended: true
 }));
+app.use(bodyParser.json());
 
 app.use(cookieParser('not-that-secret'));
 app.use(session({
@@ -122,6 +123,19 @@ app.post('/api/new', upload.single('diffFile'), function (req, res) {
     var obj = utils.createDiffObject(diff, jsonDiff);
     mongoUtils.insertDiff(obj, function() {
         res.json({'status': 'success', 'url': 'http://diffy.org/diff/' + obj._id});
+    });
+});
+
+app.post('/comments/new', function (req, res) {
+    // Current comment
+    var commentObj = utils.createCommentObject(
+            req.body.author,
+            req.body.filename,
+            req.body.text,
+            req.body.line
+        );    
+    mongoUtils.addCommentById(req.body.id, commentObj, function (doc) {
+        return res.json(commentObj);
     });
 });
 

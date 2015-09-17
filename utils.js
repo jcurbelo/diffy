@@ -52,6 +52,18 @@
         return obj;
     };
 
+    Utils.prototype.createCommentObject = function(author, filename, text, line){
+        // create comment
+        var created = new Date;
+        return {
+            author: author,
+            filename: filename,
+            text: text,
+            line: line,
+            created: created
+        }
+    };
+
     // expose this module
     ((typeof module !== 'undefined' && module.exports) ||
      (typeof exports !== 'undefined' && exports) ||

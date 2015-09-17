@@ -29,6 +29,17 @@ function _removeById(id, callback) {
     });
 }
 
+function _addCommentById(id, comment, callback){
+    diffy.updateOne(
+        {_id: id}, 
+        {'$push': {
+            'inlineComments' : comment
+        }}, 
+        function (err, doc) {
+            callback(doc);
+        });    
+}
+
 exports.insertDiff = function (diff, callback) {
     _insertDocument(diff, callback);
 };
@@ -41,4 +52,8 @@ exports.getDiffById = function (id, callback) {
 
 exports.deleteDiffById = function (id, callback) {
     _removeById(id, callback);
+}
+
+exports.addCommentById = function (id, comment, callback) {
+    _addCommentById(id, comment, callback);
 }
